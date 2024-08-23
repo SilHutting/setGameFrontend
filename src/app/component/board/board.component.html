@@ -1,0 +1,9 @@
+<div class="board">
+  <app-card
+    *ngFor="let card of cards"
+    [card]="card"
+    [isSelected]="isSelected(card.id)"
+    
+    (toggleSelection)="toggleCardSelection($event)"
+  ></app-card>
+</div>

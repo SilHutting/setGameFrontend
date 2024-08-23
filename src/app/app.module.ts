@@ -1,18 +1,16 @@
 import { Component } from '@angular/core';
-import { GameService } from './services/game.service';
+import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withJsonpSupport, HttpClient } from '@angular/common/http';
 import { HttpInterceptorService } from './interceptors/http.interceptor';
 import { GameComponent } from './component/game/game.component';
+import { AppComponent } from './app.component';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-  standalone: true,
+@NgModule({
   imports: [GameComponent],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}
-  ]
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService}
+  ],
+  
 })
-export class AppComponent {
-  title = 'Set Game!';
+export class AppModule {
+  title = 'setGameFrontend';
 }
