@@ -14,8 +14,6 @@ import { ControlPanelComponent } from '../control-panel/control-panel.component'
 export class GameComponent {
   game: any;
   selectedCards: number[] = [];
-  gameId: number | undefined;
-  //gameScore: number = 0;
   message: string = '';
   hintMessage: string = '';
 
@@ -27,14 +25,12 @@ export class GameComponent {
   createGame(name: string) {
     this.gameService.createGame(name).subscribe(response => {
       this.game = response;
-      //this.gameScore = response.score;
-      this.gameId = response.id;
+      this.selectedCards = [];
       this.message = '';
       this.hintMessage = '';
     });
   }
   toggleCardSelection(cardId: number) {
-    console.log('Card selected:', cardId);
     if (this.selectedCards.includes(cardId)) {
       this.selectedCards = this.selectedCards.filter(id => id !== cardId);
     } else {
@@ -42,13 +38,16 @@ export class GameComponent {
         this.selectedCards.push(cardId);
       }
     }
+    console.log('Selected cards:', this.selectedCards);
   }
   suggestSet() {
     if (this.selectedCards.length === 3 && this.game?.id) {
       this.gameService.suggestSet(this.game.id, this.selectedCards).subscribe(response => {
-        if (response.Message === "Set is valid!") {
-          this.game = response.Game;
+        console.log(response);
+        if (response.message === "Set is valid!") {
+          this.game = response.game;
           this.message = 'Correct set, +10 points.';
+          this.selectedCards = [];
           // New game score is included in the new game object
         } else {
           this.message = 'Set is invalid!';
@@ -59,12 +58,20 @@ export class GameComponent {
   }
 
   getHint() {
-    if (!this.gameId) return;
-    this.gameService.getHint(this.gameId).subscribe(response => {
+    if (!this.game.id) return;
+    this.gameService.getHint(this.game.id).subscribe(response => {
       const hintCards = response.hint;
       //console.log('Hint request resonse', response);
       this.message = `Hint: ${hintCards}`;
       this.game.score--;
     });
+  }
+  loadGame(gameId: number) {
+    this.gameService.getGame(gameId).subscribe(
+      response => {
+        this.game = response;
+        this.selectedCards = [];
+        this.message = `Game ${gameId} loaded successfully.`;
+      });
   }
 }

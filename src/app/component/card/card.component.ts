@@ -30,6 +30,8 @@ export class CardComponent {
   }
 
   onCardClick() {
+    this.isSelected = !this.isSelected;
+    console.log('Card clicked:', this.card.id);
     this.toggleSelection.emit(this.card.id);
   }
 }

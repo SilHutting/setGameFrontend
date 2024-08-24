@@ -1,13 +1,18 @@
 <div>
-    <app-control-panel (onCreateGame)="createGame($event)" 
-                       (onSuggestSet)="suggestSet()" 
-                       (onGetHint)="getHint()"></app-control-panel>
-    <app-board [cards]="game?.tableCards"></app-board>
-    <!-- <app-score [score]="game?.score"></app-score> -->
-  
-</div>
-<div>
   <p>Message: {{message}}</p>
   <p>GameScore: {{this.game.score}}</p>
   <p>GameName: {{this.game.name}}</p>
 </div>
+
+<div>
+  <app-board [cards]="game?.tableCards"
+  (cardSelectionChanged)="toggleCardSelection($event)"></app-board>
+    <app-control-panel (onCreateGame)="createGame($event)" 
+                       (onSuggestSet)="suggestSet()" 
+                       (onGetHint)="getHint()"                  
+                       (gameSelected)="loadGame($event)"></app-control-panel>
+
+    <!-- <app-score [score]="game?.score"></app-score> -->
+  
+</div>
+
