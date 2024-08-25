@@ -25,6 +25,7 @@ export class GameComponent {
   createGame(name: string) {
     this.gameService.createGame(name).subscribe(response => {
       this.game = response;
+      console.log('Game created:', this.game);
       this.selectedCards = [];
       this.message = '';
       this.hintMessage = '';
@@ -46,6 +47,7 @@ export class GameComponent {
         console.log(response);
         if (response.message === "Set is valid!") {
           this.game = response.game;
+          console.log('Game updated:', this.game);
           this.message = 'Correct set, +10 points.';
           this.selectedCards = [];
           // New game score is included in the new game object
